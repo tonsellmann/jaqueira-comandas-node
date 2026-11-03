@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [24, 26]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      # Sem npm install: o projeto não tem dependências.
+      - run: npm test
+      - run: npm run demo && for f in .demo/dominio/*.js .demo/js/*.js .demo/demo.js; do node --check "$f"; done

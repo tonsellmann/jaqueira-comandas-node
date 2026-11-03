@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cozinha · Jaqueira</title>
+<meta name="theme-color" content="#1c120c">
+<link rel="stylesheet" href="css/salao.css">
+<script type="module" src="js/estacao.js"></script>
+</head>
+<body class="tela-estacao">
+<header class="topo topo--estacao">
+  <span class="marca">Jaqueira</span>
+  <nav class="estacoes" aria-label="Estação">
+    <a href="?estacao=cozinha" data-estacao="cozinha">Cozinha</a>
+    <a href="?estacao=bar" data-estacao="bar">Bar</a>
+  </nav>
+  <span class="relogio" data-relogio></span>
+  <span data-selo></span>
+</header>
+<main data-estacao-fila aria-live="polite"></main>
+<div class="avisos" data-avisos></div>
+</body>
+</html>

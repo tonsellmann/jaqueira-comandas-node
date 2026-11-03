@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comandas · Jaqueira</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="css/salao.css">
+<style>
+  /* A demonstração: o salão inteiro numa tela. O garçom no celular, a cozinha e o caixa ao lado,
+     e embaixo o que o servidor está fazendo. */
+  body { background: #efe3d1; }
+  .demo-topo { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; padding: 12px 20px; background: var(--verde); color: #fff; }
+  .demo-topo h1 { margin: 0; font: 400 22px/1 'Caprasimo', Georgia, serif; }
+  .demo-topo p { margin: 0; max-width: 60ch; font-size: 14px; opacity: .85; }
+  .wifi { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+  .wifi span { font-weight: 700; font-size: 14px; }
+  .wifi button { min-height: 36px; padding: 4px 12px; border: 1px solid rgb(255 255 255 / .4); border-radius: 999px; background: transparent; color: #fff; font-weight: 700; font-size: 14px; }
+  .wifi button[aria-pressed='true'] { background: var(--amarelo); border-color: var(--amarelo); color: var(--tinta); }
+  .palco { display: grid; grid-template-columns: 390px minmax(0, 1.15fr) minmax(0, 1fr); gap: 16px; padding: 16px 20px 0; }
+  .quadro { display: grid; grid-template-rows: auto 1fr; min-width: 0; }
+  .quadro h2 { margin: 0 0 6px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--suave); }
+  .quadro iframe { width: 100%; height: 640px; border: 0; border-radius: 18px; background: #fff; box-shadow: 0 20px 40px -28px rgb(42 26 18 / .6); }
+  .quadro--celular iframe { border: 8px solid var(--tinta); border-radius: 36px; }
+  .registro { margin: 16px 20px 24px; padding: 12px 16px; border-radius: 14px; background: #1c120c; color: #e8d9c4; font: 13px/1.6 ui-monospace, 'Cascadia Mono', Consolas, monospace; max-height: 190px; overflow: auto; }
+  .registro h2 { margin: 0 0 4px; font: 700 12px/1.2 'Karla', system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #b9a58c; }
+  .registro ol { margin: 0; padding-left: 18px; }
+  .registro .repetido { color: var(--amarelo); }
+  .registro .perdido { color: #ff9b8f; }
+  .abas-demo { display: none; }
+  @media (max-width: 1100px) {
+    .palco { grid-template-columns: 1fr; }
+    .abas-demo { display: flex; gap: 6px; padding: 12px 16px 0; }
+    .abas-demo button { flex: 1; min-height: 40px; border: 2px solid var(--linha); border-radius: 999px; background: #fff; font-weight: 700; }
+    .abas-demo [aria-selected='true'] { background: var(--tinta); border-color: var(--tinta); color: #fff; }
+    .quadro { display: none; }
+    .quadro.ativo { display: grid; }
+    .quadro h2 { display: none; }
+    .quadro iframe, .quadro--celular iframe { height: 70vh; border: 0; border-radius: 14px; }
+    .wifi { margin-left: 0; }
+  }
+</style>
+<script type="module" src="demo.js"></script>
+</head>
+<body>
+<header class="demo-topo">
+  <h1>Jaqueira · comandas</h1>
+  <p>Projeto conceito com o restaurante fictício. As três telas são as do sistema; o servidor roda nesta página, com o mesmo código do Node.</p>
+  <div class="wifi" role="group" aria-label="Wi-Fi do garçom">
+    <span>Wi-Fi do garçom:</span>
+    <button type="button" data-wifi="ok" aria-pressed="true">Bom</button>
+    <button type="button" data-wifi="fora" aria-pressed="false">Caiu</button>
+    <button type="button" data-wifi="resposta-perdida" aria-pressed="false">Perde a resposta</button>
+  </div>
+</header>
+<div class="abas-demo" role="tablist">
+  <button type="button" role="tab" data-aba="garcom" aria-selected="true">Garçom</button>
+  <button type="button" role="tab" data-aba="cozinha" aria-selected="false">Cozinha</button>
+  <button type="button" role="tab" data-aba="caixa" aria-selected="false">Caixa</button>
+</div>
+<main class="palco">
+  <section class="quadro quadro--celular ativo" data-quadro="garcom"><h2>Garçom, no celular</h2><iframe name="garcom" title="Tela do garçom" data-src="garcom.html"></iframe></section>
+  <section class="quadro" data-quadro="cozinha"><h2>Cozinha e bar</h2><iframe name="cozinha" title="Tela da cozinha" data-src="estacao.html?estacao=cozinha"></iframe></section>
+  <section class="quadro" data-quadro="caixa"><h2>Caixa</h2><iframe name="caixa" title="Tela do caixa" data-src="caixa.html"></iframe></section>
+</main>
+<section class="registro" aria-label="O que o servidor fez">
+  <h2>Servidor</h2>
+  <ol data-registro></ol>
+</section>
+</body>
+</html>
