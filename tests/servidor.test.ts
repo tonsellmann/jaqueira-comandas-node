@@ -107,6 +107,11 @@ describe('servidor', () => {
     assert.equal(Object.values(livro.salao.linhas)[0].nome, 'Abará');
   });
 
+  it('responde ao healthcheck com o último evento, lendo o banco', async () => {
+    const saude = await (await fetch(`${base}/saude`)).json();
+    assert.deepEqual(saude, { ok: true, seq: 4 });
+  });
+
   it('serve as telas e o domínio sem os tipos, e não deixa sair da pasta', async () => {
     const tela = await fetch(`${base}/cozinha`);
     assert.equal(tela.status, 200);

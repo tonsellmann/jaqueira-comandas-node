@@ -4,6 +4,7 @@
 //   POST /api/comandos                  um comando { id, pedido }; o mesmo id não executa duas vezes
 //   GET  /api/eventos                   SSE: os eventos desde ?desde= (ou Last-Event-ID) e os novos, ao vivo
 //   GET  /dominio/*.js                  o domínio em TypeScript, sem os tipos, para as telas usarem o mesmo código
+//   GET  /saude                         para o healthcheck: responde se o banco responde
 
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { readFile } from 'node:fs/promises';
@@ -129,6 +130,11 @@ export function criarServidor(livro: Livro, relogio: () => Date = () => new Date
       if (req.method === 'POST' && pathname === '/api/comandos') return await comandos(req, res);
       if (req.method === 'GET' && pathname === '/api/eventos') return eventos(req, res, url);
       if (req.method !== 'GET') return responder(res, 405, 'Método não permitido', 'text/plain; charset=utf-8');
+      if (pathname === '/saude') {
+        // Lê o banco de verdade: se o arquivo sumiu ou travou, a consulta lança e o healthcheck falha.
+        livro.eventosDesde(livro.salao.seq);
+        return json(res, 200, { ok: true, seq: livro.salao.seq });
+      }
       if (pathname === '/') return responder(res, 302, '', 'text/plain', { Location: '/garcom' });
       if (TELAS[pathname]) return await arquivo(res, join(PUBLICO, TELAS[pathname]));
       if (pathname.startsWith('/dominio/')) return await dominio(res, pathname.slice('/dominio/'.length));

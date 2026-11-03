@@ -1,0 +1,9 @@
+node_modules
+dados
+.demo
+.git
+.github
+tests
+demo
+scripts
+*.md
